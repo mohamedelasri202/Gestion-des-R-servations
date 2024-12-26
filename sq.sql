@@ -1,6 +1,11 @@
-create database voyage_agency ;
+create database agency ;
 
-use voyage_agency;
+use agency;
+    create table role (
+     id int primary key auto_increment ,
+     role_name varchar (100)
+        );
+        insert into role (id ,role_name) values ('1','admin'),('2','client');
 
  create table utilisateur (
      id int primary key auto_increment ,
@@ -12,11 +17,7 @@ use voyage_agency;
         );
 
 
-        create table role (
-     id int primary key auto_increment ,
-     role_name varchar (100)
-        );
-        insert into role (id ,role_name) values ('1','admin'),('2','client');
+    
         
 
 
@@ -45,6 +46,13 @@ use voyage_agency;
         FOREIGN KEY (utilisateur) REFERENCES utilisateur(id),
         FOREIGN KEY (activities) REFERENCES activities(id)
     );
+
+
+    insert into utilisateur(name,email,password,id_role)
+    values("ichrak","ichrak@gmail.com","1234",1);
+
+    insert into utilisateur(name,email,password,id_role)
+    values("ichrak","ichrak@gmail.com","1234",1);
 
 
     
