@@ -113,7 +113,104 @@
                         </button>
                     </div>
                 </div>
-               
+                <div class="overflow-x-auto p-4">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left">
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">User</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Email</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Role</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Status</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition-all duration-300">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
+                                            JD
+                                        </div>
+                                        <p class="font-medium text-slate-800">John Doe</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">john@example.com</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-blue-100 text-blue-700">Admin</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-emerald-100 text-emerald-700">Active</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <a href="edit_client.php?id=1" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="text-red-500 hover:text-red-700" title="Ban User">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition-all duration-300">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600 font-medium mr-3">
+                                            AS
+                                        </div>
+                                        <p class="font-medium text-slate-800">Alice Smith</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">alice@example.com</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-slate-100 text-slate-700">User</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-emerald-100 text-emerald-700">Active</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <a href="edit_client.php?id=2" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="text-red-500 hover:text-red-700" title="Ban User">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="hover:bg-slate-50 transition-all duration-300">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-red-600 font-medium mr-3">
+                                            RJ
+                                        </div>
+                                        <p class="font-medium text-slate-800">Robert Johnson</p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600">robert@example.com</td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-slate-100 text-slate-700">User</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-red-100 text-red-700">Banned</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <a href="edit_client.php?id=3" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="text-emerald-500 hover:text-emerald-700" title="Unban User">
+                                            <i class="fas fa-check-circle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </div>
