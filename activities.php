@@ -1,3 +1,105 @@
+<?php
+include 'Database.php';
+
+class utilisateur {
+    private $name;
+    private $email;
+    private $password;
+    protected $dbcon;
+
+    public function __construct($db, $name = "", $email= "", $password= "") {
+        $this->dbcon = $db; 
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
+      
+    }
+
+    public function insertActivity() {
+       
+            $sql = "INSERT INTO utilisateur(name, email, password) VALUES (:name, :email, :password)";
+            $stmt = $this->dbcon->prepare($sql);
+
+          
+            $stmt->bindParam(':name', $this->name);
+            $stmt->bindParam(':email', $this->email);
+            $stmt->bindParam(':password', $this->password);
+
+    
+            $stmt->execute();
+
+
+   
+    }
+}
+
+// Usage example
+$db = new Database();
+$conn = $db->connect();
+
+if ($conn) {
+    // Create an instance of Activities and insert data
+    $activity = new utilisateur ($conn, "Hiking Trip", "A fun mountain hike", 555);
+    $activity->insertActivity();
+} else {
+    echo "Database connection failed.";
+}
+?>
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +129,48 @@
     </style>
 </head>
 <body class="bg-slate-50">
+    <!-- Activity Form Modal -->
+    <div id="activityModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-slate-800">Add New Activity</h3>
+                <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Activity Photo</label>
+                    <input type="file" accept="image/*" class="w-full p-2 border border-slate-200 rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Title</label>
+                    <input type="text" class="w-full p-3 border border-slate-200 rounded-xl" placeholder="Enter activity title">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
+                    <textarea class="w-full p-3 border border-slate-200 rounded-xl h-32" placeholder="Enter activity description"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Type</label>
+                    <select class="w-full p-3 border border-slate-200 rounded-xl">
+                        <option value="outdoor">Outdoor</option>
+                        <option value="water">Water</option>
+                        <option value="cultural">Cultural</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">Price ($)</label>
+                    <input type="number" step="0.01" class="w-full p-3 border border-slate-200 rounded-xl" placeholder="Enter price">
+                </div>
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="toggleModal()" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600">Save Activity</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="min-h-screen flex">
         <!-- Sidebar -->
         <aside class="w-72 ocean-gradient text-white py-8 px-6 fixed h-full">
@@ -36,7 +180,7 @@
             </div>
             
             <nav class="space-y-6">
-                <a href="dashboord.php.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
+                <a href="dashboard.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-th-large text-lg"></i>
                     <span class="font-medium">Dashboard</span>
                 </a>
@@ -108,7 +252,7 @@
                 <div class="p-8 border-b border-slate-100">
                     <div class="flex justify-between items-center">
                         <h2 class="text-xl font-bold text-slate-800">Activities Management</h2>
-                        <button class="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-300">
+                        <button onclick="toggleModal()" class="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-all duration-300">
                             <i class="fas fa-plus mr-2"></i>Add New Activity
                         </button>
                     </div>
@@ -117,9 +261,10 @@
                     <table class="w-full">
                         <thead>
                             <tr class="text-left">
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Photo</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Activity Title</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Type</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Price Type</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Description</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Price</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
                             </tr>
@@ -127,28 +272,21 @@
                         <tbody class="divide-y divide-slate-100">
                             <tr class="hover:bg-slate-50 transition-all duration-300">
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600 font-medium mr-3">
-                                            <i class="fas fa-mountain"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-slate-800">Mountain Hiking Adventure</p>
-                                            <p class="text-sm text-slate-500">Beginner Friendly</p>
-                                        </div>
-                                    </div>
+                                    <img src="/api/placeholder/160/90" alt="Mountain Hiking" class="w-40 h-24 object-cover rounded-lg">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="font-medium text-slate-800">Mountain Hiking Adventure</p>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="status-badge bg-emerald-100 text-emerald-700">Outdoor</span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-blue-100 text-blue-700">Per Person</span>
-                                </td>
+                                <td class="px-6 py-4 text-slate-600">Experience breathtaking views on our beginner-friendly mountain trails.</td>
                                 <td class="px-6 py-4 text-slate-800 font-medium">$49.99</td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-3">
-                                        <a href="edit_activity.php?id=1" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
                                             <i class="fas fa-edit"></i>
-                                        </a>
+                                        </button>
                                         <button class="text-red-500 hover:text-red-700" title="Delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
@@ -158,59 +296,21 @@
 
                             <tr class="hover:bg-slate-50 transition-all duration-300">
                                 <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
-                                            <i class="fas fa-water"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-slate-800">Scuba Diving Experience</p>
-                                            <p class="text-sm text-slate-500">PADI Certified</p>
-                                        </div>
-                                    </div>
+                                    <img src="/api/placeholder/160/90" alt="Scuba Diving" class="w-40 h-24 object-cover rounded-lg">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="font-medium text-slate-800">Scuba Diving Experience</p>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="status-badge bg-blue-100 text-blue-700">Water</span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-violet-100 text-violet-700">Group Rate</span>
-                                </td>
+                                <td class="px-6 py-4 text-slate-600">PADI certified diving experience in crystal clear waters.</td>
                                 <td class="px-6 py-4 text-slate-800 font-medium">$199.99</td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-3">
-                                        <a href="edit_activity.php?id=2" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
                                             <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button class="text-red-500 hover:text-red-700" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
                                         </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600 font-medium mr-3">
-                                            <i class="fas fa-map-marked-alt"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-slate-800">City Walking Tour</p>
-                                            <p class="text-sm text-slate-500">Historical Sites</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-amber-100 text-amber-700">Cultural</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-blue-100 text-blue-700">Per Person</span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-800 font-medium">$29.99</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-3">
-                                        <a href="edit_activity.php?id=3" class="text-blue-500 hover:text-blue-700" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
                                         <button class="text-red-500 hover:text-red-700" title="Delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
@@ -223,5 +323,13 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function toggleModal() {
+            const modal = document.getElementById('activityModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+    </script>
 </body>
 </html>

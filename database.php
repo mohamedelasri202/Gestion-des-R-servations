@@ -7,18 +7,19 @@ class Database {
     private $password = ''; 
     public $conn; 
 
-    
     public function connect() {
+        $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8";
+        $this->conn = new PDO($dsn, $this->username, $this->password);
+        
     
-        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
+        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-      
-        if ($this->conn->connect_error) {
-            echo "ohhoh la" . $this->conn->connect_error;
+        if (!$this->conn) {
+            echo "wallo gha ktrwan";
             return null;
         }
-
-        echo "wakhlini sakta";
+        
+        echo "kayna awda a hadak";
         return $this->conn;
     }
 }

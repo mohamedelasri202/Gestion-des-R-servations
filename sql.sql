@@ -26,6 +26,7 @@ create database voyage_agency ;
              type ENUM('flight', 'hotel', 'tour') NOT NULL,
              location VARCHAR(255),
              price DECIMAL(10, 2) NOT NULL,
+             image_url varchar (100),
              availability_status ENUM('available', 'unavailable') NOT NULL,
              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );

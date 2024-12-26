@@ -6,12 +6,35 @@ require_once 'Database.php';
 $db = new Database();
 $connection = $db->connect();
 
-if ($connection) {
-  
-    echo "wa9di lgharad";
-}
 
+
+
+
+public function insert($table, $values, $rows = null)
+{
+    if ($this->tableExists($table)) {
+        $insert = 'INSERT INTO '.$table;
+        if ($rows != null) {
+            $insert .= ' ('.$rows.')';
+        }
+        for ($i = 0; $i < count($values); $i++) {
+            $values[$i] = mysqli_real_escape_string($this->con, $values[$i]);
+            if (is_string($values[$i])) {
+                $values[$i] = '"'.$values[$i].'"';
+            }
+        }
+        $values = implode(',', $values);
+        $insert .= ' VALUES ('.$values.')';
+        $ins = mysqli_query($this->con, $insert);
+        if ($ins) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +47,7 @@ if ($connection) {
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-        body {
+        body {                
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
