@@ -44,19 +44,19 @@
             </div>
             
             <nav class="space-y-6">
-                <a href="#" class="flex items-center space-x-4 px-6 py-4 bg-white bg-opacity-10 rounded-xl">
+                <a href="dashboord.php" class="flex items-center space-x-4 px-6 py-4 bg-white bg-opacity-10 rounded-xl">
                     <i class="fas fa-th-large text-lg"></i>
                     <span class="font-medium">Dashboard</span>
                 </a>
-                <a href="#" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
+                <a href="users.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-users text-lg"></i>
                     <span class="font-medium">Users</span>
                 </a>
-                <a href="#" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
+                <a href="reservations.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-calendar-check text-lg"></i>
                     <span class="font-medium">Reservations</span>
                 </a>
-                <a href="#" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
+                <a href="activities.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-hiking text-lg"></i>
                     <span class="font-medium">Activities</span>
                 </a>
@@ -85,12 +85,24 @@
                             <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">3</span>
                         </button>
                     </div>
-                    <div class="flex items-center bg-slate-50 rounded-xl p-2 pr-4">
-                        <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
-                            TA
+                    <!-- Updated Admin Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center bg-slate-50 rounded-xl p-2 pr-4 hover:bg-slate-100 transition-all duration-300">
+                            <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
+                                TA
+                            </div>
+                            <span class="font-medium text-slate-700">Admin</span>
+                            <i class="fas fa-chevron-down ml-3 text-slate-400 transition-transform group-hover:rotate-180"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 z-50">
+                         
+                            <hr class="my-2 border-slate-100">
+                            <a href="#" class="block px-4 py-2 text-red-600 hover:bg-slate-50 transition-all duration-300">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </a>
                         </div>
-                        <span class="font-medium text-slate-700">Admin</span>
-                        <i class="fas fa-chevron-down ml-3 text-slate-400"></i>
                     </div>
                 </div>
             </div>
@@ -174,7 +186,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-                        <tr class="hover:bg-slate-50 transition-all duration-300">
+                            <tr class="hover:bg-slate-50 transition-all duration-300">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
@@ -192,81 +204,20 @@
                                     <span class="status-badge bg-emerald-100 text-emerald-700">Confirmed</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                <div class="flex space-x-3">
-                                    <button class="text-blue-500 hover:text-blue-700" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="text-slate-500 hover:text-slate-700" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="text-red-500 hover:text-red-700" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
-                              </tr>
-                              <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-lg bg-rose-100 flex items-center justify-center text-rose-600 font-medium mr-3">
-                                            AS
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-slate-800">Alice Smith</p>
-                                            <p class="text-sm text-slate-500">alice@example.com</p>
-                                        </div>
+                                    <div class="flex space-x-3">
+                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-slate-500 hover:text-slate-700" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-red-500 hover:text-red-700" title="Delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-slate-600">Scuba Diving</td>
-                                <td class="px-6 py-4 text-slate-600">Dec 30, 2024</td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-amber-100 text-amber-700">Pending</span>
-                                </td>
-                                <td class="px-6 py-4">
-                                <div class="flex space-x-3">
-                                    <button class="text-blue-500 hover:text-blue-700" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="text-slate-500 hover:text-slate-700" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="text-red-500 hover:text-red-700" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
                             </tr>
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-lg bg-violet-100 flex items-center justify-center text-violet-600 font-medium mr-3">
-                                            RJ
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-slate-800">Robert Johnson</p>
-                                            <p class="text-sm text-slate-500">robert@example.com</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600">City Tour</td>
-                                <td class="px-6 py-4 text-slate-600">Dec 27, 2024</td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-red-100 text-red-700">Cancelled</span>
-                                                    </td>
-                                                    <td class="px-6 py-4">
-                                <div class="flex space-x-3">
-                                    <button class="text-blue-500 hover:text-blue-700" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="text-slate-500 hover:text-slate-700" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="text-red-500 hover:text-red-700" title="Delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </td>
-                          </tr>
+                            <!-- More table rows... -->
                         </tbody>
                     </table>
                 </div>
