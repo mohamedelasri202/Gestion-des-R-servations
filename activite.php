@@ -58,6 +58,12 @@
               <input class="form-control me-2" type="text" placeholder="Search">
               <button class="btn btn-primary" type="button">Search</button>
             </form>
+
+            <!-- Icone User -->
+      <a href="sign_in.php" class="user-icon">
+        <i class="fa-solid fa-user"></i>
+      </a>
+      
           </div>
         </div>
       </nav>
