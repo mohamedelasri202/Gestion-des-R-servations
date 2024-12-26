@@ -193,7 +193,7 @@
 
 
 
-/* Section Reservations Start */
+/* Section Activities Start */
 .main-txt h1{
     text-align: center;
     margin-top: 30px;
@@ -203,22 +203,22 @@
 .main-txt h1 span{
     color: #ffa500;
 }
-.reservations .card{
+.activities .card{
     border-radius: 5px;
     border: none;
     box-shadow: rgba(0,0,0,0.1) 0px 4px 12px;
 }
-.reservations .card img{
+.activities .card img{
     border-radius: 5px;
 }
-.reservations .card .card-body{
+.activities .card .card-body{
     background: transparent;
 }
-.reservations .card .card-body h3{
+.activities .card .card-body h3{
     font-size: 25px;
     font-weight: 600;
 }
-.reservations .card .card-body p{
+.activities .card .card-body p{
     font-size: 15px;
 }
 .checked{
@@ -227,17 +227,17 @@
 .star i{
     font-size: 15px;
 }
-.reservations .card .card-body h6{
+.activities .card .card-body h6{
     font-size: 20px;
 }
-.reservations .card .card-body a{
+.activities .card .card-body a{
     padding: 10px;
     text-decoration: none;
     background: #ffa500;
     color: white;
     border-radius: 5px;
 }
-/* Section Reservations End */
+/* Section Activites End */
 
 
 

@@ -43,7 +43,7 @@
                 <a class="nav-link active" href="home.php">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="reservation.php">Reservations</a>
+                <a class="nav-link" href="activite.php">Activities</a>
               </li>
               <!-- <li class="nav-item">
                 <a class="nav-link" href="#packages">Packages</a>
@@ -128,12 +128,12 @@
 
 
 
-    <!-- Section Reservations Start -->
-    <section class="reservations" id="reservations">
+    <!-- Section Activities Start -->
+    <section class="activities" id="activities">
       <div class="container">
         
         <div class="main-txt">
-          <h1><span>R</span>servations</h1>
+          <h1><span>A</span>ctivities</h1>
         </div>
 
         <div class="row" style="margin-top: 30px;">
@@ -275,7 +275,7 @@
 
       </div>
     </section>
-    <!-- Section Resevations End -->
+    <!-- Section Activities End -->
 
 
 
