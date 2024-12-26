@@ -193,7 +193,7 @@
 
 
 
-/* Section Packages Start */
+/* Section Reservations Start */
 .main-txt h1{
     text-align: center;
     margin-top: 30px;
@@ -203,22 +203,22 @@
 .main-txt h1 span{
     color: #ffa500;
 }
-.packages .card{
+.reservations .card{
     border-radius: 5px;
     border: none;
     box-shadow: rgba(0,0,0,0.1) 0px 4px 12px;
 }
-.packages .card img{
+.reservations .card img{
     border-radius: 5px;
 }
-.packages .card .card-body{
+.reservations .card .card-body{
     background: transparent;
 }
-.packages .card .card-body h3{
+.reservations .card .card-body h3{
     font-size: 25px;
     font-weight: 600;
 }
-.packages .card .card-body p{
+.reservations .card .card-body p{
     font-size: 15px;
 }
 .checked{
@@ -227,17 +227,17 @@
 .star i{
     font-size: 15px;
 }
-.packages .card .card-body h6{
+.reservations .card .card-body h6{
     font-size: 20px;
 }
-.packages .card .card-body a{
+.reservations .card .card-body a{
     padding: 10px;
     text-decoration: none;
     background: #ffa500;
     color: white;
     border-radius: 5px;
 }
-/* Section Packages End */
+/* Section Reservations End */
 
 
 
