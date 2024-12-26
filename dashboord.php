@@ -1,5 +1,17 @@
 
+<?php
 
+require_once 'Database.php';
+
+$db = new Database();
+$connection = $db->connect();
+
+if ($connection) {
+  
+    echo "wa9di lgharad";
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
