@@ -49,10 +49,10 @@ use agency;
 
 
     insert into utilisateur(name,email,password,id_role)
-    values("ichrak","ichrak@gmail.com","1234",1);
+    values("ichrak","ichrak@gmail.com","4321",2);
 
     insert into utilisateur(name,email,password,id_role)
-    values("ichrak","ichrak@gmail.com","1234",1);
+    values("mohamed","mohamed@gmail.com","1234",1);
 
 
     

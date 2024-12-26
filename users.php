@@ -1,3 +1,27 @@
+<?php
+require_once 'Database.php';
+
+// Connexion à la base de données
+$db = new Database();
+$pdo = $db->connect();
+
+// Récupérer tous les utilisateurs avec leurs rôles
+try {
+    $query = "
+        SELECT u.id, u.name, u.email, r.role_name 
+        FROM utilisateur u 
+        INNER JOIN role r ON u.id_role = r.id
+    ";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Erreur lors de la récupération des utilisateurs : " . $e->getMessage();
+    $users = []; // Initialiser à un tableau vide en cas d'erreur
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,11 +145,10 @@
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Email</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Role</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Status</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
+                            <!-- <tr class="hover:bg-slate-50 transition-all duration-300">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
@@ -138,9 +161,7 @@
                                 <td class="px-6 py-4">
                                     <span class="status-badge bg-blue-100 text-blue-700">Admin</span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-emerald-100 text-emerald-700">Active</span>
-                                </td>
+
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-3">
                                         <a href="edit_client.php?id=1" class="text-blue-500 hover:text-blue-700" title="Edit">
@@ -166,9 +187,7 @@
                                 <td class="px-6 py-4">
                                     <span class="status-badge bg-slate-100 text-slate-700">User</span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-emerald-100 text-emerald-700">Active</span>
-                                </td>
+                              
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-3">
                                         <a href="edit_client.php?id=2" class="text-blue-500 hover:text-blue-700" title="Edit">
@@ -194,9 +213,7 @@
                                 <td class="px-6 py-4">
                                     <span class="status-badge bg-slate-100 text-slate-700">User</span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-red-100 text-red-700">Banned</span>
-                                </td>
+                                
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-3">
                                         <a href="edit_client.php?id=3" class="text-blue-500 hover:text-blue-700" title="Edit">
@@ -207,7 +224,35 @@
                                         </button>
                                     </div>
                                 </td>
+                            </tr> -->
+
+                            <?php foreach ($users as $user): ?>
+                            <tr class="hover:bg-slate-50 transition-all duration-300">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-medium mr-3">
+                                            <?= substr($user['name'], 0, 2); ?>
+                                        </div>
+                                        <p class="font-medium text-slate-800"><?= htmlspecialchars($user['name']); ?></p>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-slate-600"><?= htmlspecialchars($user['email']); ?></td>
+                                <td class=" ```php
+                                <td class="px-6 py-4">
+                                    <span class="status-badge bg-blue-100 text-blue-700"><?= htmlspecialchars($user['role_name']); ?></span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <a href="edit_client.php?id=<?= $user['id']; ?>" class="text-blue-500 hover:text-blue-700" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button class="text-red-500 hover:text-red-700" title="Ban User">
+                                            <i class="fas fa-ban"></i>
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
