@@ -1,16 +1,21 @@
 <?php
 
 class Utilisateur {
-    private $id;
-    private $name;
-    private $email;
-    private $password;
-    private $id_role;
+    protected $id;
+    protected $name;
+    protected $email;
+    protected $password;
+    protected $id_role;
     private $pdo;
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
+    
+
+    public function getPdo() {
+      return $this->pdo;
+  }
 
     // Méthode pour inscrire un utilisateur
     public function sInscrire($name, $email, $password, $id_role) {
@@ -30,33 +35,6 @@ class Utilisateur {
         }
     }
 
-    // Méthode pour connecter un utilisateur
-    // public function seConnecter($email, $password) {
-    //     try {
-    //         $query = "SELECT * FROM utilisateur WHERE email = :email";
-    //         $stmt = $this->pdo->prepare($query);
-    //         $stmt->execute([':email' => $email]);
-
-    //         $user = $stmt->fetch();
-    //         if ($user && password_verify($password, $user['password'])) {
-    //             session_start();
-    //             $_SESSION['user_id'] = $user['id'];
-    //             $_SESSION['user_role'] = $user['id_role'];
-
-    //             // Redirection selon le rôle
-    //             if ($user['id_role'] == 1) {
-    //                 header("Location: indix.php"); // Page admin
-    //             } else {
-    //                 header("Location: home.php"); // Page client
-    //             }
-    //             exit;
-    //         } else {
-    //             echo "Identifiants incorrects.";
-    //         }
-    //     } catch (PDOException $e) {
-    //         echo "Erreur lors de la connexion : " . $e->getMessage();
-    //     }
-    // }
 
     public function seConnecter($email, $password) {
       try {

@@ -1,11 +1,11 @@
 <?php
 
 class Database {
-    private $host = 'localhost';  // Adresse IP du serveur MySQL
-    private $db_name = 'agency';  // Nom de la base de données
-    private $username = 'root';  // Nom d'utilisateur MySQL
-    private $password = 'ichrak';  // Mot de passe MySQL
-    private $conn;  // Stocke la connexion PDO
+    private $host = 'localhost';  
+    private $db_name = 'agency';  
+    private $username = 'root';  
+    private $password = 'ichrak';  
+    private $conn;  
 
     public function connect() {
         $this->conn = null;
@@ -31,6 +31,8 @@ class Database {
 
         return $this->conn;
     }
+
+    
 }
 
 ?>

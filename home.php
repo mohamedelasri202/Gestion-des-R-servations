@@ -95,7 +95,7 @@
 
 
     <!-- Section Book Start -->
-    <section class="book" id="book">
+    <!-- <section class="book" id="book">
       <div class="container">
 
         <div class="main-text">
@@ -125,11 +125,11 @@
 
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- Section Book End -->
 
      <!-- Section Activities Start -->
-     <section class="activities" id="activities">
+     <!-- <section class="activities" id="activities">
       <div class="container">
         
         <div class="main-txt">
@@ -274,7 +274,7 @@
 
 
       </div>
-    </section>
+    </section> -->
     <!-- Section Activities End -->
 
 
