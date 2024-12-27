@@ -2,9 +2,11 @@
 require_once 'Database.php';
 require_once 'Utilisateur.php';
 
+
 // Connexion à la base de données
 $db = new Database();
 $pdo = $db->connect();
+
 
 // Inscription
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

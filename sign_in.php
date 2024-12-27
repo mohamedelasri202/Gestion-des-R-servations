@@ -1,9 +1,22 @@
 <?php
+
+
 require_once 'Database.php';
 require_once 'Utilisateur.php';
 
+
+session_start();
+if (isset($_SESSION['error_message'])) {
+    echo $_SESSION['error_message'];
+    unset($_SESSION['error_message']); // Efface le message après l'affichage
+}
+
+
+
 $db = new Database();
 $pdo = $db->connect();
+
+
 
 $message = ""; // Message d'erreur
 
