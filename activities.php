@@ -65,26 +65,26 @@ class Activity {
             return false;
         }
     }
-    // public function updateActivity($id, $name, $description, $type, $location, $price, $status) {
-    //     try {
-    //         $sql = "UPDATE Activities SET name=:name, description=:description, type=:type, 
-    //                 location=:location, price=:price, availability_status=:status 
-    //                 WHERE id=:id";
-    //         $stmt = $this->dbcon->prepare($sql);
-    //         $stmt->execute([
-    //             ':id' => $id,
-    //             ':name' => $name,
-    //             ':description' => $description,
-    //             ':type' => $type,
-    //             ':location' => $location,
-    //             ':price' => $price,
-    //             ':status' => $status
-    //         ]);
-    //         return true;
-    //     } catch (PDOException $e) {
-    //         return false;
-    //     }
-    // }
+    public function updateActivity($id, $name, $description, $type, $location, $price, $status) {
+        try {
+            $sql = "UPDATE Activities SET name=:name, description=:description, type=:type, 
+                    location=:location, price=:price, availability_status=:status 
+                    WHERE id=:id";
+            $stmt = $this->dbcon->prepare($sql);
+            $stmt->execute([
+                ':id' => $id,
+                ':name' => $name,
+                ':description' => $description,
+                ':type' => $type,
+                ':location' => $location,
+                ':price' => $price,
+                ':status' => $status
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
     
 
 }
@@ -92,17 +92,17 @@ class Activity {
 $db = new Database();
 $conn = $db->connect();
     // Handle delete
-    // if(isset($_POST['delete_id'])) {
-    //     $activity = new activity($conn);
-    //     if($activity->deleteActivity($_POST['delete_id'])) {
-    //         echo "<script>alert('Activity deleted successfully!');</script>";
-    //     } else {
-    //         echo "<script>alert('Error deleting activity!');</script>";
-    //     }
-    // }
-// if (!$conn) {
-//     die("Database connection failed. Please try again later.");
-// }
+    if(isset($_POST['delete_id'])) {
+        $activity = new activity($conn);
+        if($activity->deleteActivity($_POST['delete_id'])) {
+            echo "<script>alert('Activity deleted successfully!');</script>";
+        } else {
+            echo "<script>alert('Error deleting activity!');</script>";
+        }
+    }
+if (!$conn) {
+    die("Database connection failed. Please try again later.");
+}
 
 // Insert Activity Logic
 if (isset($_POST['submit'])) {
@@ -131,22 +131,22 @@ if (isset($_POST['submit'])) {
     }
 
     // Validation
-//     if (empty($name) || empty($type) || empty($price)) {
-//         echo "<script>alert('Name, type, and price are required!');</script>";
-//     } else {
-//         $activity = new Activity($conn, $name, $description, $type, $location, $price, $availability_status, $image_url);
-//         $result = $activity->insertActivity();
+    if (empty($name) || empty($type) || empty($price)) {
+        echo "<script>alert('Name, type, and price are required!');</script>";
+    } else {
+        $activity = new Activity($conn, $name, $description, $type, $location, $price, $availability_status, $image_url);
+        $result = $activity->insertActivity();
 
-//         if ($result === true) {
-//             echo "<script>alert('Activity added successfully!');</script>";
-//         } else {
-//             echo "<script>alert('Error: " . addslashes($result) . "');</script>";
-//         }
-//     }
-// }
+        if ($result === true) {
+            echo "<script>alert('Activity added successfully!');</script>";
+        } else {
+            echo "<script>alert('Error: " . addslashes($result) . "');</script>";
+        }
+    }
+}
 
 // Delete Activity Logic
-// if (isset($_POST['delete'])) {
+if (isset($_POST['delete'])) {
     $id = $_POST['id'];
 
     if (!is_numeric($id)) {
@@ -165,22 +165,22 @@ if (isset($_POST['submit'])) {
     // Handle edit
 // Handle edit form submission
 
-// if (isset($_GET['id'])) {
-//     $id = $_GET['id'];
-//     $sql = "SELECT * FROM Activities WHERE id = :id";
-//     $stmt = $conn->prepare($sql);
-//     $stmt->bindParam(':id', $id);
-//     $stmt->execute();
-//     $activity = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sql = "SELECT * FROM Activities WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $activity = $stmt->fetch(PDO::FETCH_ASSOC);
     
-//     if ($activity) {
-//         echo "<script>
-//             document.addEventListener('DOMContentLoaded', function() {
-//                 populateEditModal(" . json_encode($activity) . ");
-//             });
-//         </script>";
-//     }
-// }
+    if ($activity) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                populateEditModal(" . json_encode($activity) . ");
+            });
+        </script>";
+    }
+}
 
 
 
