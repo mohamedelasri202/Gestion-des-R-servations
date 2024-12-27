@@ -1,11 +1,11 @@
 <?php
 require_once 'Database.php';
 
-// Connexion à la base de données
+
 $db = new Database();
 $pdo = $db->connect();
 
-// Récupérer tous les utilisateurs avec leurs rôles
+
 try {
     $query = "
         SELECT u.id, u.name, u.email, r.role_name 
@@ -17,7 +17,7 @@ try {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erreur lors de la récupération des utilisateurs : " . $e->getMessage();
-    $users = []; // Initialiser à un tableau vide en cas d'erreur
+    $users = []; 
 }
 ?>
 

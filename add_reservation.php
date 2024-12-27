@@ -97,11 +97,11 @@
           <div class="col-md-6 py-3 py-md-0">
             <form action="#">
 
-              <input type="text" class="form-control" placeholder="Where To" required><br>
+              <!-- <input type="text" class="form-control" placeholder="Where To" required><br> -->
               <input type="text" class="form-control" placeholder="How Many" required><br>
               <input type="date" class="form-control" placeholder="Arrivals" required><br>
               <input type="date" class="form-control" placeholder="Leaving" required><br>
-              <textarea class="form-control" rows="5" name="text" placeholder="Enter Your Name & Details"></textarea>
+              <!-- <textarea class="form-control" rows="5" name="text" placeholder="Enter Your Name & Details"></textarea> -->
               <input type="submit" value="Book Now" class="submit" required>
 
             </form>

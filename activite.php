@@ -1,3 +1,20 @@
+<?php
+
+include('Database.php');
+
+
+$database = new Database();
+
+$conn = $database->connect();
+
+
+$sql = "SELECT * FROM Activities"; 
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$activities = $stmt->fetchAll();
+?>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -93,136 +110,42 @@
         </div>
 
         <div class="row" style="margin-top: 30px;">
+        
 
-          <div class="col-md-4 py-3 py-md-0">
+          <?php
+                
+                foreach ($activities as $activity) {
+                    
+                    $image_url = $activity['image_url']; 
+                    $name = $activity['name'];   
+                    $description = $activity['description']; 
+                    $price = $activity['price']; 
+                ?>
 
-            <div class="card">
-              <img src="./images/uk.png" alt="">
-              <div class="card-body">
-                <h3>United Kingdom</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, doloribus!</p>
-                <div class="star">
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star "></i>
-                  <i class="fa-solid fa-star "></i>
+                <div class="col-md-4 py-3 py-md-0">
+                    <div class="card">
+                        
+                    <img src="uploads/<?php echo $image_url; ?>" alt="<?php echo $name; ?>">
+
+                        <div class="card-body">
+                            <h3><?php echo htmlspecialchars($name); ?></h3>
+                            <p><?php echo htmlspecialchars($description); ?></p>
+                            <div class="star">
+                                <i class="fa-solid fa-star checked"></i>
+                                <i class="fa-solid fa-star checked"></i>
+                                <i class="fa-solid fa-star checked"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <h6>Price: <strong>$<?php echo htmlspecialchars($price); ?></strong></h6>
+                            <a href="#book">Book Now</a>
+                        </div>
+                    </div>
                 </div>
-                <h6>Price: <strong>$500</strong></h6>
-                <a href="#book">Book Now</a>
-              </div>
-            </div>
 
-          </div>
-          <div class="col-md-4 py-3 py-md-0">
-
-            <div class="card">
-              <img src="./images/france.png" alt="">
-              <div class="card-body">
-                <h3>France</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, doloribus!</p>
-                <div class="star">
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star "></i>
-                  <i class="fa-solid fa-star "></i>
-                </div>
-                <h6>Price: <strong>$500</strong></h6>
-                <a href="#book">Book Now</a>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-md-4 py-3 py-md-0">
-
-            <div class="card">
-              <img src="./images/pakistan.png" alt="">
-              <div class="card-body">
-                <h3>Pakistan</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, doloribus!</p>
-                <div class="star">
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star "></i>
-                  <i class="fa-solid fa-star "></i>
-                </div>
-                <h6>Price: <strong>$500</strong></h6>
-                <a href="#book">Book Now</a>
-              </div>
-            </div>
-
-          </div>
-
-
-
-        </div>
-
-
-
-        <div class="row" style="margin-top: 30px;">
-
-          <div class="col-md-4 py-3 py-md-0">
-
-            <div class="card">
-              <img src="./images/italy.png" alt="">
-              <div class="card-body">
-                <h3>Italy</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, doloribus!</p>
-                <div class="star">
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star "></i>
-                  <i class="fa-solid fa-star "></i>
-                </div>
-                <h6>Price: <strong>$500</strong></h6>
-                <a href="#book">Book Now</a>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-md-4 py-3 py-md-0">
-
-            <div class="card">
-              <img src="./images/india.png" alt="">
-              <div class="card-body">
-                <h3>India</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, doloribus!</p>
-                <div class="star">
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star "></i>
-                  <i class="fa-solid fa-star "></i>
-                </div>
-                <h6>Price: <strong>$500</strong></h6>
-                <a href="#book">Book Now</a>
-              </div>
-            </div>
-
-          </div>
-          <div class="col-md-4 py-3 py-md-0">
-
-            <div class="card">
-              <img src="./images/us.png" alt="">
-              <div class="card-body">
-                <h3>United States</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ut, doloribus!</p>
-                <div class="star">
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star checked"></i>
-                  <i class="fa-solid fa-star "></i>
-                  <i class="fa-solid fa-star "></i>
-                </div>
-                <h6>Price: <strong>$500</strong></h6>
-                <a href="#book">Book Now</a>
-              </div>
-            </div>
-
-          </div>
+                <?php
+                }
+                ?>
 
 
 

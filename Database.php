@@ -22,7 +22,7 @@ class Database {
             $this->conn = new PDO($dsn, $this->username, $this->password, $options);
 
             // Afficher un message si la connexion est réussie
-            echo "Connected successfully";
+            // echo "Connected successfully";
 
         } catch (PDOException $e) {
             // Gérer les erreurs de connexion
