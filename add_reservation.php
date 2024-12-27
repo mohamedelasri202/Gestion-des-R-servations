@@ -1,3 +1,7 @@
+<?php
+require 'reserveclass.php';
+?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">

@@ -1,18 +1,59 @@
 <?php
+session_start();
 
-include('Database.php');
+// Show messages if they exist
+if (isset($_GET['success'])) {
+    echo '<div class="alert alert-success">Reservation successful!</div>';
+}
+if (isset($_GET['error'])) {
+    $error = $_GET['error'];
+    if ($error === 'login_required') {
+        echo '<div class="alert alert-danger">Please login to make a reservation.</div>';
+    } else if ($error === 'reservation_failed') {
+        echo '<div class="alert alert-danger">Failed to create reservation. Please try again.</div>';
+    }
+}
 
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to login page with error message if not logged in
+    header('Location: yourpage.php?error=login_required');
+    exit();
+}
+
+// Process reservation (example code)
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // If form is submitted, do reservation logic here
+    // Example: Check if user is logged in and create a reservation
+    if (isset($_SESSION['user_id'])) {
+        // Perform reservation logic here
+        $reservation_success = true;  // Simulating reservation success
+        if ($reservation_success) {
+            // Redirect with success message
+            header('Location: yourpage.php?success=true');
+            exit();
+        } else {
+            // Redirect with error message if reservation fails
+            header('Location: yourpage.php?error=reservation_failed');
+            exit();
+        }
+    }
+}
+
+include 'Database.php';
 
 $database = new Database();
-
 $conn = $database->connect();
-
 
 $sql = "SELECT * FROM Activities"; 
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $activities = $stmt->fetchAll();
 ?>
+
+<!-- HTML to display activities and reservation form -->
+
+
 
 
 <html lang="en">
@@ -109,48 +150,42 @@ $activities = $stmt->fetchAll();
           <h1><span>A</span>ctivities</h1>
         </div>
 
-        <div class="row" style="margin-top: 30px;">
-        
-
-          <?php
-                
-                foreach ($activities as $activity) {
-                    
-                    $image_url = $activity['image_url']; 
-                    $name = $activity['name'];   
-                    $description = $activity['description']; 
-                    $price = $activity['price']; 
-                ?>
-
-                <div class="col-md-4 py-3 py-md-0">
-                    <div class="card">
-                        
-                    <img src="uploads/<?php echo $image_url; ?>" alt="<?php echo $name; ?>">
-
-                        <div class="card-body">
-                            <h3><?php echo htmlspecialchars($name); ?></h3>
-                            <p><?php echo htmlspecialchars($description); ?></p>
-                            <div class="star">
-                                <i class="fa-solid fa-star checked"></i>
-                                <i class="fa-solid fa-star checked"></i>
-                                <i class="fa-solid fa-star checked"></i>
-                                <i class="fa-solid fa-star"></i>
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                            <h6>Price: <strong>$<?php echo htmlspecialchars($price); ?></strong></h6>
-                            <a href="#book">Book Now</a>
-                        </div>
-                    </div>
+       <div class="row" style="margin-top: 30px;">
+    <?php
+    foreach ($activities as $activity) {
+        $image_url = $activity['image_url']; 
+        $name = $activity['name'];   
+        $description = $activity['description']; 
+        $price = $activity['price']; 
+    ?>
+        <div class="col-md-4 py-3 py-md-0">
+            <div class="flex flex-col h-[500px] bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="h-[250px] w-full">
+                    <img src="<?php echo $image_url; ?>" 
+                         alt="<?php echo $name; ?>"
+                         class="w-full h-full object-cover" />
                 </div>
-
-                <?php
-                }
-                ?>
-
-
-
+                <div class="flex flex-col p-4 h-[250px] overflow-y-auto">
+                    <h3 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($name); ?></h3>
+                    <p class="text-gray-600 mb-4"><?php echo htmlspecialchars($description); ?></p>
+                    <div class="flex mb-4">
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-yellow-400"></i>
+                        <i class="fa-solid fa-star text-gray-300"></i>
+                        <i class="fa-solid fa-star text-gray-300"></i>
+                    </div>
+                    <form action="add_reservation.php" method="POST" class="mt-auto">
+                        <input type="hidden" name="activity_id" value="<?php echo $activity['id']; ?>">
+                        <input type="submit" value="Book Now" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    </form>
+                </div>
+            </div>
         </div>
-
+    <?php
+    }
+    ?>
+</div>
 
       </div>
     </section>

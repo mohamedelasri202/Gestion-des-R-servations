@@ -1,9 +1,13 @@
+<?php
+
+require 'reserveclass.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activities Management - TravelEase</title>
+    <title>Reservations Management - TravelEase</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
@@ -66,7 +70,7 @@
                     <i class="fas fa-hiking text-lg"></i>
                     <span class="font-medium">Activities</span>
                 </a>
-                <a href="#" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
+                <a href="home.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-cog text-lg"></i>
                     <span class="font-medium">Settings</span>
                 </a>
@@ -102,170 +106,120 @@
                         </button>
                         
                         <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 z-50">
-                            <a href="#" class="block px-4 py-2 text-slate-700 hover:bg-slate-50">
-                                <i class="fas fa-user mr-2"></i>Profile
-                            </a>
-                            <a href="#" class="block px-4 py-2 text-slate-700 hover:bg-slate-50">
-                                <i class="fas fa-cog mr-2"></i>Settings
-                            </a>
-                            <hr class="my-2 border-slate-100">
-                            <a href="#" class="block px-4 py-2 text-red-600 hover:bg-slate-50">
-                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                            </a>
+                        <form action="logout.php" method="POST">
+    <button type="submit" class="logout-btn">Logout</button>
+</form>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Activities Table -->
-            <div class="bg-white rounded-2xl shadow-sm">
-                <div class="p-8 border-b border-slate-100">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-slate-800">Activities Management</h2>
-                    </div>
+            <!-- Reservations Table -->
+        <div class="bg-white rounded-2xl shadow-sm">
+            <div class="p-8 border-b border-slate-100">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-slate-800">Reservations Management</h2>
                 </div>
-                <div class="overflow-x-auto p-4">
-                    <table class="w-full">
-                        <thead>
-                            <tr class="text-left">
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Client</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Activity</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Date</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">People</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Destination</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Status</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100">
-                            <!-- First Row -->
+            </div>
+            <div class="overflow-x-auto p-4">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left">
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Client</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Activity</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Date</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Price</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Destination</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Status</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <?php foreach ($reservations as $reservation): ?>
                             <tr class="hover:bg-slate-50 transition-all duration-300">
                                 <td class="px-6 py-4">
                                     <div>
-                                        <p class="font-medium text-slate-800">John Smith</p>
-                                        <p class="text-sm text-slate-500">john.smith@email.com</p>
+                                        <p class="font-medium text-slate-800"><?php echo htmlspecialchars($reservation['client_name']); ?></p>
+                                        <p class="text-sm text-slate-500"><?php echo htmlspecialchars($reservation['client_email']); ?></p>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div>
-                                        <p class="font-medium text-slate-800">Mountain Hiking</p>
-                                        <p class="text-sm text-slate-500">Beginner Trail</p>
+                                        <p class="font-medium text-slate-800"><?php echo htmlspecialchars($reservation['activity_name']); ?></p>
+                                        <p class="text-sm text-slate-500"><?php echo htmlspecialchars($reservation['activity_description']); ?></p>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <p class="text-slate-800">Dec 28, 2024</p>
+                                    <p class="text-slate-800"><?php echo date('M d, Y', strtotime($reservation['created_at'])); ?></p>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <p class="text-slate-800">4</p>
+                                    <p class="text-slate-800">$<?php echo number_format($reservation['total_price'], 2); ?></p>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <p class="text-slate-800">Mount Rainier</p>
+                                    <p class="text-slate-800"><?php echo htmlspecialchars($reservation['destination']); ?></p>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-1">
-                                        <button class="status-icon text-yellow-600 hover:text-yellow-700" title="Pending">
-                                            <i class="fas fa-clock"></i>
-                                        </button>
-                                        <button class="status-icon text-green-600 hover:text-green-700 active" title="Confirmed">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                        <button class="status-icon text-red-600 hover:text-red-700" title="Canceled">
-                                            <i class="fas fa-times"></i>
-                                        </button>
+                                        <form method="POST" class="inline">
+                                            <input type="hidden" name="reservation_id" value="<?php echo $reservation['id']; ?>">
+                                            <button type="submit" name="update_status" value="pending" 
+                                                class="status-icon text-yellow-600 hover:text-yellow-700 <?php echo $reservation['status'] === 'pending' ? 'active' : ''; ?>" 
+                                                title="Pending">
+                                                <i class="fas fa-clock"></i>
+                                            </button>
+                                            <button type="submit" name="update_status" value="confirmed" 
+                                                class="status-icon text-green-600 hover:text-green-700 <?php echo $reservation['status'] === 'confirmed' ? 'active' : ''; ?>" 
+                                                title="Confirmed">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button type="submit" name="update_status" value="cancelled" 
+                                                class="status-icon text-red-600 hover:text-red-700 <?php echo $reservation['status'] === 'cancelled' ? 'active' : ''; ?>" 
+                                                title="Canceled">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex space-x-3">
-                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
+                                        <a href="edit_reservation.php?id=<?php echo $reservation['id']; ?>" 
+                                           class="text-blue-500 hover:text-blue-700" title="Edit">
                                             <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                        </a>
+                                        <form method="POST" class="inline" 
+                                              onsubmit="return confirm('Are you sure you want to delete this reservation?');">
+                                            <input type="hidden" name="delete_reservation" value="<?php echo $reservation['id']; ?>">
+                                            <button type="submit" class="text-red-500 hover:text-red-700" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
 
-                            <!-- Second Row -->
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Sarah Johnson</p>
-                                        <p class="text-sm text-slate-500">sarah.j@email.com</p>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Scuba Diving</p>
-                                        <p class="text-sm text-slate-500">Advanced Course</p>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-800">Dec 30, 2024</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-800">2</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-800">Great Barrier Reef</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-1">
-                                        <button class="status-icon text-yellow-600 hover:text-yellow-700" title="Pending">
-                                            <i class="fas fa-clock"></i>
-                                        </button>
-                                        <button class="status-icon text-green-600 hover:text-green-700" title="Confirmed">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                        <button class="status-icon text-red-600 hover:text-red-700 active" title="Canceled">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-3">
-                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+<script>
+    // Add any JavaScript you need here
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle status updates
+        const statusButtons = document.querySelectorAll('.status-icon');
+        statusButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                const form = this.closest('form');
+                if (form) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 
-                            <!-- Third Row -->
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <div>
-                                        <p class="font-medium text-slate-800">Michael Chen</p>
-                                        <p class="text-sm text-slate-500">m.chen@email.com</p>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div>
-                                        <p class="font-medium text-slate-800">City Tour</p>
-                                        <p class="text-sm text-slate-500">Historical Walk</p>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-800">Jan 2, 2025</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-800">6</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-slate-800">Old Town Prague</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-1">
-                                        <button class="status-icon text-yellow-600 hover:text-yellow-700 active" title="Pending">
-                                            <i class="fas fa-clock"></i>
-                                        </button>
-                                        <button class="status-icon text-green-600 hover:text-green-700" title="Confirmed">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                        <button class="status-icon text-red-600 hover:text-red-700" title="Canceled">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
+</body>
+</html>

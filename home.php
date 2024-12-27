@@ -61,15 +61,21 @@
             
              
             </ul>
+            <div class="logout-form bg-black text-white p-3 mt-6 rounded w-52">
             <form class="d-flex">
               <input class="form-control me-2" type="text" placeholder="Search">
               <button class="btn btn-primary" type="button">Search</button>
             </form>
+            </div>
 
-            <!-- Icone User -->
-      <a href="sign_in.php" class="user-icon">
-        <i class="fa-solid fa-user"></i>
-      </a>
+            <div class="logout-form bg-black text-white p-5 mt-8 rounded w-52">
+    <form action="logout.php" method="POST">
+        <!-- Your logout form content here -->
+        <button type="submit" class="bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400">
+            Logout
+        </button>
+    </form>
+</div>
           </div>
         </div>
       </nav>
