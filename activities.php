@@ -2,8 +2,8 @@
 include 'Database.php';
 include 'src/activity.php';
 
-?>
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,71 +36,129 @@ include 'src/activity.php';
 <body class="bg-slate-50">
     <!-- Activity Form Modal -->
     <div id="activityModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white rounded-2xl p-6 w-[30vw] max-w-5xl max-h-[90vh] overflow-y-auto">
-        <div class="flex justify-between items-center mb-4">
-            <h3 id="modalTitle" class="text-xl font-bold text-slate-800">Add New Activity</h3>
-            <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600">
-                <i class="fas fa-times text-xl"></i>
-            </button>
+        <div class="bg-white rounded-2xl p-6 w-[30vw] max-w-5xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-xl font-bold text-slate-800">Add New Activity</h3>
+                <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="activity_id" id="activity_id">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Photo</label>
+                    <input type="file" name="image_url" class="w-full p-2 border border-slate-200 rounded-xl">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                    <input type="text" name="name" required class="w-full p-2 border border-slate-200 rounded-xl" placeholder="Activity name">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                    <textarea name="description" class="w-full p-2 border border-slate-200 rounded-xl h-20" placeholder="Activity description"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                    <select name="type" required class="w-full p-2 border border-slate-200 rounded-xl">
+                        <option value="flight">Flight</option>
+                        <option value="hotel">Hotel</option>
+                        <option value="tour">Tour</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
+                    <input type="text" name="location" class="w-full p-2 border border-slate-200 rounded-xl" placeholder="Activity location">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Price</label>
+                    <input type="number" name="price" required step="0.01" class="w-full p-2 border border-slate-200 rounded-xl" placeholder="0.00">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Availability Status</label>
+                    <select name="availability_status" required class="w-full p-2 border border-slate-200 rounded-xl">
+                        <option value="available">Available</option>
+                        <option value="unavailable">Unavailable</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-4 mt-4">
+                    <button type="button" onclick="toggleModal()" class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200">
+                        Cancel
+                    </button>
+                    <button type="submit" name="submit" id="submitBtn" class="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600">
+                        Add Activity
+                    </button>
+                </div>
+            </form>
         </div>
-        <form class="space-y-4" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="activity_id" id="activity_id">
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Photo</label>
-                <input type="file" name="image_url" class="w-full p-2 border border-slate-200 rounded-xl">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
-                <input type="text" name="name" required 
-                       class="w-full p-2 border border-slate-200 rounded-xl" 
-                       placeholder="Activity name">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
-                <textarea name="description" 
-                          class="w-full p-2 border border-slate-200 rounded-xl h-20" 
-                          placeholder="Activity description"></textarea>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Type</label>
-                <select name="type" required class="w-full p-2 border border-slate-200 rounded-xl">
-                    <option value="flight">Flight</option>
-                    <option value="hotel">Hotel</option>
-                    <option value="tour">Tour</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
-                <input type="text" name="location" 
-                       class="w-full p-2 border border-slate-200 rounded-xl" 
-                       placeholder="Activity location">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Price</label>
-                <input type="number" name="price" required step="0.01" 
-                       class="w-full p-2 border border-slate-200 rounded-xl" 
-                       placeholder="0.00">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Availability Status</label>
-                <select name="availability_status" required class="w-full p-2 border border-slate-200 rounded-xl">
-                    <option value="available">Available</option>
-                    <option value="unavailable">Unavailable</option>
-                </select>
-            </div>
-            <div class="flex justify-end space-x-4 mt-4">
-                <button type="button" onclick="toggleModal()" 
-                        class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200">
-                    Cancel
-                </button>
-                <button type="submit" name="submit" id="submitBtn" 
-                        class="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600">
-                    Add Activity
-                </button>
-            </div>
-        </form>
     </div>
-</div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+        <div class="bg-white rounded-xl p-6 w-96">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold">Edit Activity</h3>
+                <button onclick="closeEditModal()" class="text-gray-500 hover:text-gray-700">×</button>
+            </div>
+            
+            <form method="POST" class="space-y-4">
+                <input type="hidden" id="edit_id" name="edit_id">
+                
+                <div>
+                    <label class="block text-sm mb-1">Name</label>
+                    <input type="text" id="edit_name" name="edit_name" required
+                           class="w-full p-2 border rounded">
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-1">Description</label>
+                    <textarea id="edit_description" name="edit_description"
+                              class="w-full p-2 border rounded"></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-1">Type</label>
+                    <select id="edit_type" name="edit_type" required
+                            class="w-full p-2 border rounded">
+                        <option value="flight">Flight</option>
+                        <option value="hotel">Hotel</option>
+                        <option value="tour">Tour</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-1">Location</label>
+                    <input type="text" id="edit_location" name="edit_location"
+                           class="w-full p-2 border rounded">
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-1">Price</label>
+                    <input type="number" id="edit_price" name="edit_price" required
+                           class="w-full p-2 border rounded" step="0.01">
+                </div>
+                
+                <div>
+                    <label class="block text-sm mb-1">Status</label>
+                    <select id="edit_status" name="edit_status" required
+                            class="w-full p-2 border rounded">
+                        <option value="available">Available</option>
+                        <option value="unavailable">Unavailable</option>
+                    </select>
+                </div>
+                
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeEditModal()"
+                            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                        Cancel
+                    </button>
+                    <button type="submit" name="update"
+                            class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <div class="min-h-screen flex">
         <!-- Sidebar -->
@@ -118,7 +176,7 @@ include 'src/activity.php';
                 <a href="users.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-users text-lg"></i>
                     <span class="font-medium">Clients</span>
-                </a>
+                    </a>
                 <a href="reservations.php" class="flex items-center space-x-4 px-6 py-4 hover:bg-white hover:bg-opacity-10 rounded-xl">
                     <i class="fas fa-calendar-check text-lg"></i>
                     <span class="font-medium">Reservations</span>
@@ -152,7 +210,6 @@ include 'src/activity.php';
                             <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">3</span>
                         </button>
                     </div>
-                    <!-- Admin Dropdown -->
                     <div class="relative group">
                         <button class="flex items-center bg-slate-50 rounded-xl p-2 pr-4 hover:bg-slate-100 transition-all duration-300">
                             <div class="w-10 h-10 rounded-lg bg-blue-500 flex items-center justify-center text-white font-bold mr-3">
@@ -202,101 +259,61 @@ include 'src/activity.php';
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-<?php
-$activity = new Activity($conn);
-$activities = $activity->getActivities();
+                            <?php
+                            $activity = new Activity($conn);
+                            $activities = $activity->getActivities();
 
-foreach ($activities as $row) {
-    ?>
-    <tr class="hover:bg-slate-50 transition-all duration-300">
-        <td class="px-6 py-4">
-            <div class="flex items-center">
-                <img src="<?php echo $row['image_url']; ?>" 
-                     class="w-16 h-16 rounded-lg object-cover mr-3">
-                <p class="font-medium text-slate-800"><?php echo $row['name']; ?></p>
-            </div>
-        </td>
-        <td class="px-6 py-4">
-            <span class="status-badge bg-blue-100 text-blue-700"><?php echo $row['type']; ?></span>
-        </td>
-        <td class="px-6 py-4 text-slate-600"><?php echo $row['location']; ?></td>
-        <td class="px-6 py-4 text-slate-600"><?php echo $row['description']; ?></td>
-        <td class="px-6 py-4 text-slate-800 font-medium">$<?php echo $row['price']; ?></td>
-        <td class="px-6 py-4">
-            <span class="status-badge bg-emerald-100 text-emerald-700"><?php echo $row['availability_status']; ?></span>
-        </td>
-        <td class="px-6 py-4">
-            <div class="flex space-x-3">
-                <a href="activities.php?id=<?php echo $row['id']; ?>" class="px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                    Edit
-                </a>
-                <form method="POST">
-                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                    <button type="submit" name="delete" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-                        Delete
-                    </button>
-                </form>
-            </div>
-        </td>
-    </tr>
-    <?php
-}
-?>
-</tbody>
-
-
+                            foreach ($activities as $row) {
+                                ?>
+                                <tr class="hover:bg-slate-50 transition-all duration-300">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <img src="<?php echo $row['image_url']; ?>" 
+                                                 class="w-16 h-16 rounded-lg object-cover mr-3">
+                                            <p class="font-medium text-slate-800"><?php echo $row['name']; ?></p>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="status-badge bg-blue-100 text-blue-700"><?php echo $row['type']; ?></span>
+                                    </td>
+                                    <td class="px-6 py-4 text-slate-600"><?php echo $row['location']; ?></td>
+                                    <td class="px-6 py-4 text-slate-600"><?php echo $row['description']; ?></td>
+                                    <td class="px-6 py-4 text-slate-800 font-medium">$<?php echo $row['price']; ?></td>
+                                    <td class="px-6 py-4">
+                                        <span class="status-badge bg-emerald-100 text-emerald-700"><?php echo $row['availability_status']; ?></span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex space-x-3">
+                                            <button onclick="editActivity(
+                                                '<?php echo $row['id']; ?>', 
+                                                '<?php echo $row['name']; ?>', 
+                                                '<?php echo $row['description']; ?>', 
+                                                '<?php echo $row['type']; ?>', 
+                                                '<?php echo $row['location']; ?>', 
+                                                '<?php echo $row['price']; ?>', 
+                                                '<?php echo $row['availability_status']; ?>'
+                                            )" class="px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                                                Edit
+                                            </button>
+                                            <form method="POST">
+                                                <input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
+                                                <button type="submit" name="delete" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
         </main>
     </div>
-
- 
-  
-    <script>
-      function toggleModal() {
-    const modal = document.getElementById('activityModal');
-    modal.classList.toggle('flex');
-    modal.classList.toggle('hidden');
-}
-
-function populateEditModal(activity) {
-    document.getElementById('modalTitle').textContent = 'Edit Activity';
-    document.getElementById('activity_id').value = activity.id;
-    document.querySelector('[name="name"]').value = activity.name;
-    document.querySelector('[name="description"]').value = activity.description;
-    document.querySelector('[name="type"]').value = activity.type;
-    document.querySelector('[name="location"]').value = activity.location;
-    document.querySelector('[name="price"]').value = activity.price;
-    document.querySelector('[name="availability_status"]').value = activity.availability_status;
-    document.getElementById('submitBtn').textContent = 'Update Activity';
-    
-    toggleModal();
-}
-
-document.querySelector('#activityModal button[onclick="toggleModal()"]').addEventListener('click', function() {
-    setTimeout(() => {
-        document.getElementById('modalTitle').textContent = 'Add New Activity';
-        document.getElementById('activity_id').value = '';
-        document.querySelector('[name="name"]').value = '';
-        document.querySelector('[name="description"]').value = '';
-        document.querySelector('[name="type"]').value = '';
-        document.querySelector('[name="location"]').value = '';
-        document.querySelector('[name="price"]').value = '';
-        document.querySelector('[name="availability_status"]').value = '';
-        document.getElementById('submitBtn').textContent = 'Add Activity';
-    }, 300);
-});
-
-    
-    </script>
-
-
-
-
-  
-
-
-
+<script src="main.js"></script>
+   
 </body>
 </html>
