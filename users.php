@@ -1,14 +1,26 @@
 <?php
+require_once 'Utilisateur.php';  // Inclure la classe Utilisateur et SuperAdmin
 require_once 'Database.php';
-
+require_once 'SuperAdmin.php';
 
 $db = new Database();
 $pdo = $db->connect();
 
+$superAdmin = new SuperAdmin($pdo);
+
+if (isset($_GET['archiver'])) {
+    $userId = $_GET['archiver'];
+    $superAdmin->archiverUtilisateur($userId);
+}
+
+if (isset($_GET['bannir'])) {
+    $userId = $_GET['bannir'];
+    $superAdmin->bannirUtilisateur($userId);
+}
 
 try {
     $query = "
-        SELECT u.id, u.name, u.email, r.role_name 
+        SELECT u.id, u.name, u.email, r.role_name, u.status 
         FROM utilisateur u 
         INNER JOIN role r ON u.id_role = r.id
     ";
@@ -145,6 +157,7 @@ try {
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Email</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Role</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Status</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -164,16 +177,20 @@ try {
                                 <td class="px-6 py-4">
                                     <span class="status-badge bg-blue-100 text-blue-700"><?= htmlspecialchars($user['role_name']); ?></span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-3">
-                                        <a href="edit_client.php?id=<?= $user['id']; ?>" class="text-blue-500 hover:text-blue-700" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button class="text-red-500 hover:text-red-700" title="Ban User">
-                                            <i class="fas fa-ban"></i>
-                                        </button>
-                                    </div>
-                                </td>
+                                
+                                <td class="px-6 py-4"><?= htmlspecialchars($user['status']); ?></td>
+            <td class="px-6 py-4">
+                <?php if ($user['status'] != 'archivé'): ?>
+                    <a href="users.php?archiver=<?= $user['id']; ?>" class="text-blue-500 hover:text-blue-700" title="Archive">
+                        <i class="fas fa-archive"></i>
+                    </a>
+                <?php endif; ?>
+                <?php if ($user['status'] != 'banni'): ?>
+                    <a href="users.php?bannir=<?= $user['id']; ?>" class="text-red-500 hover:text-red-700" title="Ban">
+                        <i class="fas fa-ban"></i>
+                    </a>
+                <?php endif; ?>
+            </td>
                             </tr>
                             <?php endforeach; ?>
                         </tbody>

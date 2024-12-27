@@ -54,5 +54,7 @@ use agency;
     insert into utilisateur(name,email,password,id_role)
     values("mohamed","mohamed@gmail.com","1234",1);
 
+    INSERT INTO role (id ,role_name) values ('3','superadmin');
+
 
     

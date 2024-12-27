@@ -56,7 +56,7 @@ class Utilisateur {
               $_SESSION['user_role'] = $user['id_role'];
   
               // Redirection selon le rôle
-              if ($user['id_role'] == 1) {
+              if ($user['id_role'] == 1 || $user['id_role'] == 3) {
                   header("Location: dashboord.php"); // Page admin
               } else {
                   header("Location: home.php"); // Page client
