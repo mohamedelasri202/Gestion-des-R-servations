@@ -1,11 +1,9 @@
 <?php
-require_once 'Utilisateur.php';  // Inclure la classe Utilisateur et SuperAdmin
 require_once 'Database.php';
 require_once 'SuperAdmin.php';
 
 $db = new Database();
 $pdo = $db->connect();
-
 $superAdmin = new SuperAdmin($pdo);
 
 if (isset($_GET['archiver'])) {
@@ -19,17 +17,15 @@ if (isset($_GET['bannir'])) {
 }
 
 try {
-    $query = "
-        SELECT u.id, u.name, u.email, r.role_name, u.status 
-        FROM utilisateur u 
-        INNER JOIN role r ON u.id_role = r.id
-    ";
+    $query = "SELECT u.id, u.name, u.email, r.role_name, u.status 
+              FROM utilisateur u 
+              INNER JOIN role r ON u.id_role = r.id";
     $stmt = $pdo->prepare($query);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Erreur lors de la récupération des utilisateurs : " . $e->getMessage();
-    $users = []; 
+    $users = [];
 }
 ?>
 
