@@ -55,16 +55,16 @@ class Activity {
     }
 
 
-    // public function deleteActivity($id) {
-    //     try {
-    //         $sql = "DELETE FROM Activities WHERE id = :id";
-    //         $stmt = $this->dbcon->prepare($sql);
-    //         $stmt->bindParam(':id', $id);
-    //         return $stmt->execute();
-    //     } catch (PDOException $e) {
-    //         return false;
-    //     }
-    // }
+    public function deleteActivity($id) {
+        try {
+            $sql = "DELETE FROM Activities WHERE id = :id";
+            $stmt = $this->dbcon->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
     // public function updateActivity($id, $name, $description, $type, $location, $price, $status) {
     //     try {
     //         $sql = "UPDATE Activities SET name=:name, description=:description, type=:type, 
