@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once 'Database.php';
 require_once 'SuperAdmin.php';
 
@@ -7,13 +8,21 @@ $pdo = $db->connect();
 $superAdmin = new SuperAdmin($pdo);
 
 if (isset($_GET['archiver'])) {
-    $userId = $_GET['archiver'];
-    $superAdmin->archiverUtilisateur($userId);
+    try {
+        $userId = $_GET['archiver'];
+        $superAdmin->archiverUtilisateur($userId);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 if (isset($_GET['bannir'])) {
-    $userId = $_GET['bannir'];
-    $superAdmin->bannirUtilisateur($userId);
+    try {
+        $userId = $_GET['bannir'];
+        $superAdmin->bannirUtilisateur($userId);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 }
 
 try {
@@ -28,6 +37,7 @@ try {
     $users = [];
 }
 ?>
+
 
 
 <!DOCTYPE html>
