@@ -41,5 +41,6 @@ class SuperAdmin extends Utilisateur {
             echo "Erreur : " . $e->getMessage();
         }
     }
+    
 }
 ?>

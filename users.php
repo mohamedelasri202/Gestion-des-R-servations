@@ -25,6 +25,8 @@ if (isset($_GET['bannir'])) {
     }
 }
 
+
+
 try {
     $query = "SELECT u.id, u.name, u.email, r.role_name, u.status 
               FROM utilisateur u 
