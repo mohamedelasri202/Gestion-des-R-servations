@@ -1,103 +1,192 @@
 <?php
 include 'Database.php';
 
-class utilisateur {
+class Activity {
     private $name;
-    private $email;
-    private $password;
+    private $description;
+    private $type;
+    private $location;
+    private $price;
+    private $availability_status;
+    private $image_url;
     protected $dbcon;
 
-    public function __construct($db, $name = "", $email= "", $password= "") {
-        $this->dbcon = $db; 
+    public function __construct($db, $name = "", $description = "", $type = "", $location = "", $price = "", $availability_status = "", $image_url = "") {
+        $this->dbcon = $db;
         $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
-      
+        $this->description = $description;
+        $this->type = $type;
+        $this->location = $location;
+        $this->price = $price;
+        $this->availability_status = $availability_status;
+        $this->image_url = $image_url;
     }
 
     public function insertActivity() {
-       
-            $sql = "INSERT INTO utilisateur(name, email, password) VALUES (:name, :email, :password)";
+        try {
+            $sql = "INSERT INTO Activities(name, description, type, location, price, availability_status, image_url)
+                    VALUES (:name, :description, :type, :location, :price, :availability_status, :image_url)";
             $stmt = $this->dbcon->prepare($sql);
 
-          
             $stmt->bindParam(':name', $this->name);
-            $stmt->bindParam(':email', $this->email);
-            $stmt->bindParam(':password', $this->password);
+            $stmt->bindParam(':description', $this->description);
+            $stmt->bindParam(':type', $this->type);
+            $stmt->bindParam(':location', $this->location);
+            $stmt->bindParam(':price', $this->price);
+            $stmt->bindParam(':availability_status', $this->availability_status);
+            $stmt->bindParam(':image_url', $this->image_url);
 
-    
             $stmt->execute();
-
-
-   
+            return true;
+        } catch (PDOException $e) {
+            return "Error: " . $e->getMessage();
+        }
     }
+
+    public function getActivities() {
+        try {
+            $sql = "SELECT * FROM Activities";
+            $stmt = $this->dbcon->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return "Error: " . $e->getMessage();
+        }
+    }
+
+
+    // public function deleteActivity($id) {
+    //     try {
+    //         $sql = "DELETE FROM Activities WHERE id = :id";
+    //         $stmt = $this->dbcon->prepare($sql);
+    //         $stmt->bindParam(':id', $id);
+    //         return $stmt->execute();
+    //     } catch (PDOException $e) {
+    //         return false;
+    //     }
+    // }
+    // public function updateActivity($id, $name, $description, $type, $location, $price, $status) {
+    //     try {
+    //         $sql = "UPDATE Activities SET name=:name, description=:description, type=:type, 
+    //                 location=:location, price=:price, availability_status=:status 
+    //                 WHERE id=:id";
+    //         $stmt = $this->dbcon->prepare($sql);
+    //         $stmt->execute([
+    //             ':id' => $id,
+    //             ':name' => $name,
+    //             ':description' => $description,
+    //             ':type' => $type,
+    //             ':location' => $location,
+    //             ':price' => $price,
+    //             ':status' => $status
+    //         ]);
+    //         return true;
+    //     } catch (PDOException $e) {
+    //         return false;
+    //     }
+    // }
+    
+
 }
 
-// Usage example
 $db = new Database();
 $conn = $db->connect();
+    // Handle delete
+    // if(isset($_POST['delete_id'])) {
+    //     $activity = new activity($conn);
+    //     if($activity->deleteActivity($_POST['delete_id'])) {
+    //         echo "<script>alert('Activity deleted successfully!');</script>";
+    //     } else {
+    //         echo "<script>alert('Error deleting activity!');</script>";
+    //     }
+    // }
+// if (!$conn) {
+//     die("Database connection failed. Please try again later.");
+// }
 
-if ($conn) {
-    // Create an instance of Activities and insert data
-    $activity = new utilisateur ($conn, "Hiking Trip", "A fun mountain hike", 555);
-    $activity->insertActivity();
-} else {
-    echo "Database connection failed.";
+// Insert Activity Logic
+if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+    $type = $_POST['type'];
+    $location = $_POST['location'];
+    $price = $_POST['price'];
+    $availability_status = $_POST['availability_status'];
+
+    // File upload handling
+    $image_url = "";
+    if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
+        $target_dir = "uploads/";
+        $file_type = pathinfo($_FILES["image_url"]["name"], PATHINFO_EXTENSION);
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (in_array($file_type, $allowed_types)) {
+            $target_file = $target_dir . uniqid() . "." . $file_type;
+            move_uploaded_file($_FILES["image_url"]["tmp_name"], $target_file);
+            $image_url = $target_file;
+        } else {
+            echo "<script>alert('Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.');</script>";
+            exit;
+        }
+    }
+
+    // Validation
+//     if (empty($name) || empty($type) || empty($price)) {
+//         echo "<script>alert('Name, type, and price are required!');</script>";
+//     } else {
+//         $activity = new Activity($conn, $name, $description, $type, $location, $price, $availability_status, $image_url);
+//         $result = $activity->insertActivity();
+
+//         if ($result === true) {
+//             echo "<script>alert('Activity added successfully!');</script>";
+//         } else {
+//             echo "<script>alert('Error: " . addslashes($result) . "');</script>";
+//         }
+//     }
+// }
+
+// Delete Activity Logic
+// if (isset($_POST['delete'])) {
+    $id = $_POST['id'];
+
+    if (!is_numeric($id)) {
+        echo "<script>alert('Invalid ID.');</script>";
+        exit;
+    }
+
+    $activity = new Activity($conn);
+    $result = $activity->deleteActivity($id);
+
+    if ($result === true) {
+        echo "<script>alert('Activity deleted successfully!');</script>";
+    } else {
+        echo "<script>alert('Error: " . addslashes($result) . "');</script>";
+    }
+    // Handle edit
+// Handle edit form submission
+
+// if (isset($_GET['id'])) {
+//     $id = $_GET['id'];
+//     $sql = "SELECT * FROM Activities WHERE id = :id";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->bindParam(':id', $id);
+//     $stmt->execute();
+//     $activity = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+//     if ($activity) {
+//         echo "<script>
+//             document.addEventListener('DOMContentLoaded', function() {
+//                 populateEditModal(" . json_encode($activity) . ");
+//             });
+//         </script>";
+//     }
+// }
+
+
+
+
 }
 ?>
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!DOCTYPE html>
@@ -131,45 +220,71 @@ if ($conn) {
 <body class="bg-slate-50">
     <!-- Activity Form Modal -->
     <div id="activityModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-slate-800">Add New Activity</h3>
-                <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fas fa-times text-xl"></i>
+    <div class="bg-white rounded-2xl p-6 w-[30vw] max-w-5xl max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h3 id="modalTitle" class="text-xl font-bold text-slate-800">Add New Activity</h3>
+            <button onclick="toggleModal()" class="text-slate-400 hover:text-slate-600">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <form class="space-y-4" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="activity_id" id="activity_id">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Photo</label>
+                <input type="file" name="image_url" class="w-full p-2 border border-slate-200 rounded-xl">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                <input type="text" name="name" required 
+                       class="w-full p-2 border border-slate-200 rounded-xl" 
+                       placeholder="Activity name">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                <textarea name="description" 
+                          class="w-full p-2 border border-slate-200 rounded-xl h-20" 
+                          placeholder="Activity description"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Type</label>
+                <select name="type" required class="w-full p-2 border border-slate-200 rounded-xl">
+                    <option value="flight">Flight</option>
+                    <option value="hotel">Hotel</option>
+                    <option value="tour">Tour</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
+                <input type="text" name="location" 
+                       class="w-full p-2 border border-slate-200 rounded-xl" 
+                       placeholder="Activity location">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Price</label>
+                <input type="number" name="price" required step="0.01" 
+                       class="w-full p-2 border border-slate-200 rounded-xl" 
+                       placeholder="0.00">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Availability Status</label>
+                <select name="availability_status" required class="w-full p-2 border border-slate-200 rounded-xl">
+                    <option value="available">Available</option>
+                    <option value="unavailable">Unavailable</option>
+                </select>
+            </div>
+            <div class="flex justify-end space-x-4 mt-4">
+                <button type="button" onclick="toggleModal()" 
+                        class="px-4 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200">
+                    Cancel
+                </button>
+                <button type="submit" name="submit" id="submitBtn" 
+                        class="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600">
+                    Add Activity
                 </button>
             </div>
-            <form class="space-y-6">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Activity Photo</label>
-                    <input type="file" accept="image/*" class="w-full p-2 border border-slate-200 rounded-xl">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Title</label>
-                    <input type="text" class="w-full p-3 border border-slate-200 rounded-xl" placeholder="Enter activity title">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
-                    <textarea class="w-full p-3 border border-slate-200 rounded-xl h-32" placeholder="Enter activity description"></textarea>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Type</label>
-                    <select class="w-full p-3 border border-slate-200 rounded-xl">
-                        <option value="outdoor">Outdoor</option>
-                        <option value="water">Water</option>
-                        <option value="cultural">Cultural</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-2">Price ($)</label>
-                    <input type="number" step="0.01" class="w-full p-3 border border-slate-200 rounded-xl" placeholder="Enter price">
-                </div>
-                <div class="flex justify-end space-x-4">
-                    <button type="button" onclick="toggleModal()" class="px-6 py-2 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200">Cancel</button>
-                    <button type="submit" class="px-6 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600">Save Activity</button>
-                </div>
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 
     <div class="min-h-screen flex">
         <!-- Sidebar -->
@@ -261,75 +376,111 @@ if ($conn) {
                     <table class="w-full">
                         <thead>
                             <tr class="text-left">
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Photo</th>
-                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Activity Title</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Activity Name</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Type</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Location</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Description</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Price</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-slate-600">Status</th>
                                 <th class="px-6 py-4 text-sm font-semibold text-slate-600">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <img src="/api/placeholder/160/90" alt="Mountain Hiking" class="w-40 h-24 object-cover rounded-lg">
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="font-medium text-slate-800">Mountain Hiking Adventure</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-emerald-100 text-emerald-700">Outdoor</span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600">Experience breathtaking views on our beginner-friendly mountain trails.</td>
-                                <td class="px-6 py-4 text-slate-800 font-medium">$49.99</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-3">
-                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+<?php
+$activity = new Activity($conn);
+$activities = $activity->getActivities();
 
-                            <tr class="hover:bg-slate-50 transition-all duration-300">
-                                <td class="px-6 py-4">
-                                    <img src="/api/placeholder/160/90" alt="Scuba Diving" class="w-40 h-24 object-cover rounded-lg">
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="font-medium text-slate-800">Scuba Diving Experience</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="status-badge bg-blue-100 text-blue-700">Water</span>
-                                </td>
-                                <td class="px-6 py-4 text-slate-600">PADI certified diving experience in crystal clear waters.</td>
-                                <td class="px-6 py-4 text-slate-800 font-medium">$199.99</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-3">
-                                        <button class="text-blue-500 hover:text-blue-700" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-500 hover:text-red-700" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+foreach ($activities as $row) {
+    ?>
+    <tr class="hover:bg-slate-50 transition-all duration-300">
+        <td class="px-6 py-4">
+            <div class="flex items-center">
+                <img src="<?php echo $row['image_url']; ?>" 
+                     class="w-16 h-16 rounded-lg object-cover mr-3">
+                <p class="font-medium text-slate-800"><?php echo $row['name']; ?></p>
+            </div>
+        </td>
+        <td class="px-6 py-4">
+            <span class="status-badge bg-blue-100 text-blue-700"><?php echo $row['type']; ?></span>
+        </td>
+        <td class="px-6 py-4 text-slate-600"><?php echo $row['location']; ?></td>
+        <td class="px-6 py-4 text-slate-600"><?php echo $row['description']; ?></td>
+        <td class="px-6 py-4 text-slate-800 font-medium">$<?php echo $row['price']; ?></td>
+        <td class="px-6 py-4">
+            <span class="status-badge bg-emerald-100 text-emerald-700"><?php echo $row['availability_status']; ?></span>
+        </td>
+        <td class="px-6 py-4">
+            <div class="flex space-x-3">
+                <a href="activities.php?id=<?php echo $row['id']; ?>" class="px-3 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                    Edit
+                </a>
+                <form method="POST">
+                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                    <button type="submit" name="delete" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    <?php
+}
+?>
+</tbody>
+
+
                     </table>
                 </div>
             </div>
         </main>
     </div>
 
+ 
+  
     <script>
-        function toggleModal() {
-            const modal = document.getElementById('activityModal');
-            modal.classList.toggle('hidden');
-            modal.classList.toggle('flex');
-        }
+      function toggleModal() {
+    const modal = document.getElementById('activityModal');
+    modal.classList.toggle('flex');
+    modal.classList.toggle('hidden');
+}
+
+function populateEditModal(activity) {
+    document.getElementById('modalTitle').textContent = 'Edit Activity';
+    document.getElementById('activity_id').value = activity.id;
+    document.querySelector('[name="name"]').value = activity.name;
+    document.querySelector('[name="description"]').value = activity.description;
+    document.querySelector('[name="type"]').value = activity.type;
+    document.querySelector('[name="location"]').value = activity.location;
+    document.querySelector('[name="price"]').value = activity.price;
+    document.querySelector('[name="availability_status"]').value = activity.availability_status;
+    document.getElementById('submitBtn').textContent = 'Update Activity';
+    
+    toggleModal();
+}
+
+document.querySelector('#activityModal button[onclick="toggleModal()"]').addEventListener('click', function() {
+    setTimeout(() => {
+        document.getElementById('modalTitle').textContent = 'Add New Activity';
+        document.getElementById('activity_id').value = '';
+        document.querySelector('[name="name"]').value = '';
+        document.querySelector('[name="description"]').value = '';
+        document.querySelector('[name="type"]').value = '';
+        document.querySelector('[name="location"]').value = '';
+        document.querySelector('[name="price"]').value = '';
+        document.querySelector('[name="availability_status"]').value = '';
+        document.getElementById('submitBtn').textContent = 'Add Activity';
+    }, 300);
+});
+
+    
     </script>
+
+
+
+
+  
+
+
+
 </body>
 </html>
